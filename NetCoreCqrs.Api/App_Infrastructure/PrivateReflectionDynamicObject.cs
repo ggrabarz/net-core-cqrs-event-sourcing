@@ -5,12 +5,10 @@ using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 
-namespace NetCoreCqrs.Api.Core
+namespace NetCoreCqrs.Api.App_Infrastructure
 {
-
     //FROM http://blogs.msdn.com/b/davidebb/archive/2010/01/18/use-c-4-0-dynamic-to-drastically-simplify-your-private-reflection-code.aspx
-    //doesnt count to line counts :)
-    class PrivateReflectionDynamicObject : DynamicObject
+    public sealed class PrivateReflectionDynamicObject : DynamicObject
     {
 
         private static IDictionary<Type, IDictionary<string, IProperty>> _propertiesOnType = new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
@@ -238,18 +236,8 @@ namespace NetCoreCqrs.Api.Core
                 {
                     return InvokeMemberOnType(type.BaseType, target, name, args);
                 }
-                //quick greg hack to allow methods to not exist!
-                return null;
+                throw;
             }
-        }
-    }
-
-
-    public static class PrivateReflectionDynamicObjectExtensions
-    {
-        public static dynamic AsDynamic(this object o)
-        {
-            return PrivateReflectionDynamicObject.WrapObjectIfNeeded(o);
         }
     }
 }

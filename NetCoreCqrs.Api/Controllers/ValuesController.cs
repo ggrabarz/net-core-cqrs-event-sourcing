@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NetCoreCqrs.Api.Core;
+using NetCoreCqrs.Api.Core.Commands;
+using NetCoreCqrs.Api.Core.FakeBus;
+using NetCoreCqrs.Api.Core.ReadModel;
 using System;
 
 namespace NetCoreCqrs.Api.Controllers
@@ -8,7 +10,7 @@ namespace NetCoreCqrs.Api.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        private ICommandSender _bus;
+        private readonly ICommandSender _bus;
         private readonly IReadModelFacade _readmodel;
 
         public ValuesController(IReadModelFacade readmodel, ICommandSender bus)
@@ -26,41 +28,46 @@ namespace NetCoreCqrs.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult GetItemDetails([FromRoute] Guid id)
         {
-            return Ok(_readmodel.GetInventoryItemDetails(id));
+            var result = _readmodel.GetInventoryItemDetailsOrDefault(id);
+            if (result == null)
+            {
+                return NotFound();
+            }
+            return Ok(result);
         }
 
         [HttpPost]
         public ActionResult AddItem([FromQuery] string name)
         {
-            _bus.Send(new CreateInventoryItem(Guid.NewGuid(), name));
+            _bus.Send(new CreateInventoryItemCommand(Guid.NewGuid(), name));
             return StatusCode(201);
         }
 
         [HttpPost("{id}/ChangeName")]
         public ActionResult ChangeName([FromRoute] Guid id, [FromQuery] string name, [FromQuery] int version)
         {
-            _bus.Send(new RenameInventoryItem(id, name, version));
+            _bus.Send(new RenameInventoryItemCommand(id, name, version));
             return NoContent();
         }
 
-        [HttpPost("{id}/Deactivate")]
-        public ActionResult Deactivate([FromRoute] Guid id, [FromQuery] int version)
-        {
-            _bus.Send(new DeactivateInventoryItem(id, version));
-            return NoContent();
-        }
-
-        [HttpPost("{id}/CheckIn")]
+        [HttpPost("{id}/IncreaseAmmount")]
         public ActionResult CheckIn([FromRoute] Guid id, [FromQuery] int number, [FromQuery] int version)
         {
-            _bus.Send(new CheckInItemsToInventory(id, number, version));
+            _bus.Send(new CheckInItemsToInventoryCommand(id, number, version));
             return NoContent();
         }
 
-        [HttpPost("{id}/Remove")]
+        [HttpPost("{id}/DecreaseAmmount")]
         public ActionResult Remove([FromRoute] Guid id, [FromQuery] int number, [FromQuery] int version)
         {
-            _bus.Send(new RemoveItemsFromInventory(id, number, version));
+            _bus.Send(new RemoveItemsFromInventoryCommand(id, number, version));
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult Deactivate([FromRoute] Guid id, [FromQuery] int version)
+        {
+            _bus.Send(new DeactivateInventoryItemCommand(id, version));
             return NoContent();
         }
     }
