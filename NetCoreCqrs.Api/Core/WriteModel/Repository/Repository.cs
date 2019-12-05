@@ -1,5 +1,6 @@
 ﻿using NetCoreCqrs.Api.Core.EventStore;
 using NetCoreCqrs.Api.Core.WriteModel.RepositoryCache;
+using NetCoreCqrs.Api.Core.WriteModel.RepositorySnapshotCache;
 using System;
 
 namespace NetCoreCqrs.Api.Core.Domain
@@ -8,11 +9,13 @@ namespace NetCoreCqrs.Api.Core.Domain
     {
         private readonly IEventStore _storage;
         private readonly IRepositoryCache<T> _repositoryCache;
+        private readonly IRepositorySnapshotCache<T> _repositorySnapshotCache;
 
-        public Repository(IEventStore storage, IRepositoryCache<T> repositoryCache)
+        public Repository(IEventStore storage, IRepositoryCache<T> repositoryCache, IRepositorySnapshotCache<T> repositorySnapshotCache)
         {
             _storage = storage;
             _repositoryCache = repositoryCache;
+            _repositorySnapshotCache = repositorySnapshotCache;
         }
 
         public void Save(T aggregate, int expectedVersion)
@@ -20,6 +23,7 @@ namespace NetCoreCqrs.Api.Core.Domain
             _storage.SaveEvents(aggregate.Id, aggregate.GetUncommittedChanges(), expectedVersion);
             aggregate.MarkChangesAsCommitted();
             _repositoryCache.Set(aggregate.Id.ToString(), aggregate);
+            _repositorySnapshotCache.Set(aggregate.Id.ToString(), aggregate);
         }
 
         public T GetById(Guid id)
@@ -29,6 +33,13 @@ namespace NetCoreCqrs.Api.Core.Domain
             {
                 _repositoryCache.Refresh(id.ToString());
                 return cachedValue;
+            }
+            var snapshotValue = _repositorySnapshotCache.GetOrDefault(id.ToString());
+            if(snapshotValue != null)
+            {
+                var eventsListForSnapshot = _storage.GetEventsForAggregate(id, snapshotValue.Version + 1);
+                snapshotValue.LoadsFromHistory(eventsListForSnapshot);
+                return snapshotValue;
             }
             var result = new T();
             var eventsList = _storage.GetEventsForAggregate(id);

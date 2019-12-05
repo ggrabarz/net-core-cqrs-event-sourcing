@@ -10,6 +10,7 @@ using NetCoreCqrs.Api.Core.FakeBus;
 using NetCoreCqrs.Api.Core.ReadModel;
 using NetCoreCqrs.Api.Core.ReadModel.EventHandlers;
 using NetCoreCqrs.Api.Core.WriteModel.RepositoryCache;
+using NetCoreCqrs.Api.Core.WriteModel.RepositorySnapshotCache;
 
 namespace NetCoreCqrs.Api
 {
@@ -43,6 +44,7 @@ namespace NetCoreCqrs.Api
             services.AddTransient<IEventPublisher, FakeBus>((serviceProvider) => new FakeBus(serviceProvider));
             services.AddTransient<IRepository<InventoryItem>, Repository<InventoryItem>>();
             services.AddSingleton<IRepositoryCache<InventoryItem>, RepositoryCache<InventoryItem>>();
+            services.AddSingleton<IRepositorySnapshotCache<InventoryItem>, RepositorySnapshotCache<InventoryItem>>();
             services.AddTransient<IEventStore, EventStore>();
             services.AddSingleton<FakeReadDatabase>();
             services.AddSingleton<FakeWriteDatabase>();
