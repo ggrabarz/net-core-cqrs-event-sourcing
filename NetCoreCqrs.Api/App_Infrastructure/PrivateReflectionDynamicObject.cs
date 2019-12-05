@@ -11,7 +11,7 @@ namespace NetCoreCqrs.Api.App_Infrastructure
     public sealed class PrivateReflectionDynamicObject : DynamicObject
     {
 
-        private static IDictionary<Type, IDictionary<string, IProperty>> _propertiesOnType = new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
+        private static readonly IDictionary<Type, IDictionary<string, IProperty>> _propertiesOnType = new ConcurrentDictionary<Type, IDictionary<string, IProperty>>();
 
         // Simple abstraction to make field and property access consistent
         interface IProperty
@@ -160,8 +160,7 @@ namespace NetCoreCqrs.Api.App_Infrastructure
             IDictionary<string, IProperty> typeProperties = GetTypeProperties(RealObject.GetType());
 
             // Look for the one we want
-            IProperty property;
-            if (typeProperties.TryGetValue(propertyName, out property))
+            if (typeProperties.TryGetValue(propertyName, out var property))
             {
                 return property;
             }
@@ -180,8 +179,7 @@ namespace NetCoreCqrs.Api.App_Infrastructure
         private static IDictionary<string, IProperty> GetTypeProperties(Type type)
         {
             // First, check if we already have it cached
-            IDictionary<string, IProperty> typeProperties;
-            if (_propertiesOnType.TryGetValue(type, out typeProperties))
+            if (_propertiesOnType.TryGetValue(type, out var typeProperties))
             {
                 return typeProperties;
             }

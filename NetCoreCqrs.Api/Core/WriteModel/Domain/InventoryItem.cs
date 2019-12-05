@@ -5,6 +5,8 @@ namespace NetCoreCqrs.Api.Core.Domain
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members")]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter")]
+
 
     public class InventoryItem : AggregateRoot
     {
