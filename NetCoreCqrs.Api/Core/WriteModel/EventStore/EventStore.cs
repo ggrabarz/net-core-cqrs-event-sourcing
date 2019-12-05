@@ -56,5 +56,10 @@ namespace NetCoreCqrs.Api.Core.EventStore
             }
             return eventDescriptors.Select(desc => desc.EventData).ToList();
         }
+
+        public int GetLastEventVersionForAggregate(Guid aggregateId)
+        {
+            return GetEventsForAggregate(aggregateId).Last().Version;
+        }
     }
 }

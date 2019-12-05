@@ -8,5 +8,6 @@ namespace NetCoreCqrs.Api.Core.EventStore
     {
         void SaveEvents(Guid aggregateId, IEnumerable<Event> events, int expectedVersion);
         List<Event> GetEventsForAggregate(Guid aggregateId);
+        int GetLastEventVersionForAggregate(Guid aggregateId);
     }
 }

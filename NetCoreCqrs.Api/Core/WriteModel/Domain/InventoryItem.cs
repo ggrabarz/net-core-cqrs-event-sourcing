@@ -11,7 +11,7 @@ namespace NetCoreCqrs.Api.Core.Domain
         private bool _activated;
         private Guid _id;
         private string _name;
-        private int _count = 0;
+        private int _count;
 
         public InventoryItem()
         {

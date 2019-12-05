@@ -10,7 +10,7 @@ namespace NetCoreCqrs.Api.Core.Domain
         private readonly List<Event> _changes = new List<Event>();
 
         public abstract Guid Id { get; }
-        public int Version { get; internal set; }
+        public int Version { get; internal set; } = -1; // create event application will increment this value to zero
 
         public IEnumerable<Event> GetUncommittedChanges()
         {
@@ -36,6 +36,7 @@ namespace NetCoreCqrs.Api.Core.Domain
         private void ApplyChange(Event @event, bool isNew)
         {
             this.AsDynamic().Apply(@event);
+            Version++;
             if (isNew) _changes.Add(@event);
         }
     }
