@@ -39,8 +39,9 @@ namespace NetCoreCqrs.Api.Controllers
         [HttpPost]
         public ActionResult AddItem([FromQuery] string name)
         {
-            _bus.Send(new CreateInventoryItemCommand(Guid.NewGuid(), name));
-            return StatusCode(201);
+            var newItemId = Guid.NewGuid();
+            _bus.Send(new CreateInventoryItemCommand(newItemId, name));
+            return StatusCode(201, newItemId.ToString());
         }
 
         [HttpPost("{id}/ChangeName")]
