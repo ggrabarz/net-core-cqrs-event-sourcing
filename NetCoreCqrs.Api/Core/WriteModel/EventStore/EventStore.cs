@@ -22,27 +22,29 @@ namespace NetCoreCqrs.Api.Core.EventStore
             if (!FakeWriteDatabase.events.TryGetValue(aggregateId, out var eventDescriptors))
             {
                 eventDescriptors = new List<EventDescriptor>();
-                FakeWriteDatabase.events.Add(aggregateId, eventDescriptors);
+                FakeWriteDatabase.events.TryAdd(aggregateId, eventDescriptors);
             }
-            // check whether latest event version matches current aggregate version
-            // otherwise -> throw exception
-            else if (eventDescriptors[eventDescriptors.Count - 1].Version != expectedVersion && expectedVersion != -1)
-            {
-                throw new ConcurrencyException();
-            }
-            var i = expectedVersion;
+            lock (eventDescriptors){
+                // check whether latest event version matches current aggregate version
+                // otherwise -> throw exception
+                if (expectedVersion != -1 && eventDescriptors[eventDescriptors.Count - 1].Version != expectedVersion)
+                {
+                    throw new ConcurrencyException();
+                }
+                var i = expectedVersion;
 
-            // iterate through current aggregate events increasing version with each processed event
-            foreach (var @event in events)
-            {
-                i++;
-                @event.Version = i;
+                // iterate through current aggregate events increasing version with each processed event
+                foreach (var @event in events)
+                {
+                    i++;
+                    @event.Version = i;
 
-                // push event to the event descriptors list for current aggregate
-                eventDescriptors.Add(new EventDescriptor(aggregateId, @event, i));
+                    // push event to the event descriptors list for current aggregate
+                    eventDescriptors.Add(new EventDescriptor(aggregateId, @event, i));
 
-                // publish current event to the bus for further processing by subscribers
-                _publisher.Publish(@event);
+                    // publish current event to the bus for further processing by subscribers
+                    _publisher.Publish(@event);
+                }
             }
         }
 
