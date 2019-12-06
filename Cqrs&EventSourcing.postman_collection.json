@@ -1,0 +1,233 @@
+{
+	"info": {
+		"_postman_id": "bef49c56-23eb-4164-8593-0fe2cd78cdfe",
+		"name": "Cqrs&EventSourcing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetItems",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/values",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetItemDetails",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/values/a7585bd4-4e38-4dde-abae-bd8a8310f100",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values",
+						"a7585bd4-4e38-4dde-abae-bd8a8310f100"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddItem",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/api/values?name=test0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test0"
+						},
+						{
+							"key": "version",
+							"value": "0",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeName",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330/ChangeName?name=test2&version=0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values",
+						"bc41e20f-d495-438f-90fc-cdf5b194c330",
+						"ChangeName"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "test2"
+						},
+						{
+							"key": "version",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "IncreaseAmmount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330/IncreaseAmmount?number=0&version=0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values",
+						"bc41e20f-d495-438f-90fc-cdf5b194c330",
+						"IncreaseAmmount"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "0"
+						},
+						{
+							"key": "version",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DecreaseAmmount",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/values/6dad8c70-c3e2-448c-a17d-8f846f966036/DecreaseAmmount?number=3&version=4",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values",
+						"6dad8c70-c3e2-448c-a17d-8f846f966036",
+						"DecreaseAmmount"
+					],
+					"query": [
+						{
+							"key": "number",
+							"value": "3"
+						},
+						{
+							"key": "version",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deactivate",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330?version=0",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"values",
+						"bc41e20f-d495-438f-90fc-cdf5b194c330"
+					],
+					"query": [
+						{
+							"key": "version",
+							"value": "0"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,6 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NetCoreCqrs.Api.Core.CommandHandlers;
+using NetCoreCqrs.Api.Core.Commands;
+using NetCoreCqrs.Api.Core.Domain;
+using NetCoreCqrs.Api.Core.Events;
+using NetCoreCqrs.Api.Core.EventStore;
+using NetCoreCqrs.Api.Core.FakeBus;
+using NetCoreCqrs.Api.Core.ReadModel;
+using NetCoreCqrs.Api.Core.ReadModel.EventHandlers;
+using NetCoreCqrs.Api.Core.WriteModel.RepositoryCache;
+using NetCoreCqrs.Api.Core.WriteModel.RepositorySnapshotCache;
 
 namespace NetCoreCqrs.Api
 {
@@ -16,6 +26,28 @@ namespace NetCoreCqrs.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<IReadModelFacade, ReadModelFacade>();
+            services.AddTransient<ICommandHandler<CheckInItemsToInventoryCommand>, CheckInItemsToInventoryCommandHandler>();
+            services.AddTransient<ICommandHandler<CreateInventoryItemCommand>, CreateInventoryItemCommandHandler>();
+            services.AddTransient<ICommandHandler<DeactivateInventoryItemCommand>, DeactivateInventoryItemCommandHandler>();
+            services.AddTransient<ICommandHandler<RemoveItemsFromInventoryCommand>, RemoveItemsFromInventoryCommandHandler>();
+            services.AddTransient<ICommandHandler<RenameInventoryItemCommand>, RenameInventoryItemCommandHandler>();
+            services.AddTransient<IEventHandler<InventoryItemCreatedEvent>, Core.ReadModel.EventHandlers.ForDetails.InventoryItemCreatedEventHandler>();
+            services.AddTransient<IEventHandler<InventoryItemDeactivatedEvent>, Core.ReadModel.EventHandlers.ForDetails.InventoryItemDeactivatedEventHandler>();
+            services.AddTransient<IEventHandler<InventoryItemRenamedEvent>, Core.ReadModel.EventHandlers.ForDetails.InventoryItemRenamedEventHandler>();
+            services.AddTransient<IEventHandler<ItemsCheckedInToInventoryEvent>, Core.ReadModel.EventHandlers.ForDetails.ItemsCheckedInToInventoryEventHandler>();
+            services.AddTransient<IEventHandler<ItemsRemovedFromInventoryEvent>, Core.ReadModel.EventHandlers.ForDetails.ItemsRemovedFromInventoryEventHandler>();
+            services.AddTransient<IEventHandler<InventoryItemCreatedEvent>, Core.ReadModel.EventHandlers.ForList.InventoryItemCreatedEventHandler>();
+            services.AddTransient<IEventHandler<InventoryItemRenamedEvent>, Core.ReadModel.EventHandlers.ForList.InventoryItemRenamedEventHandler>();
+            services.AddTransient<IEventHandler<InventoryItemDeactivatedEvent>, Core.ReadModel.EventHandlers.ForList.InventoryItemDeactivatedEventHandler>();
+            services.AddTransient<ICommandSender, FakeBus>((serviceProvider) => new FakeBus(serviceProvider));
+            services.AddTransient<IEventPublisher, FakeBus>((serviceProvider) => new FakeBus(serviceProvider));
+            services.AddTransient<IRepository<InventoryItem>, Repository<InventoryItem>>();
+            services.AddSingleton<IRepositoryCache<InventoryItem>, RepositoryCache<InventoryItem>>();
+            services.AddSingleton<IRepositorySnapshotCache<InventoryItem>, RepositorySnapshotCache<InventoryItem>>();
+            services.AddTransient<IEventStore, EventStore>();
+            services.AddSingleton<FakeReadDatabase>();
+            services.AddSingleton<FakeWriteDatabase>();
         }
 
         public void Configure(IApplicationBuilder app)
