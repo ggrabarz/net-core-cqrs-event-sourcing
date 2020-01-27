@@ -1,0 +1,1 @@
+﻿This repository is not full blast DDD.

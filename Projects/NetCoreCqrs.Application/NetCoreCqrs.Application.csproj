@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreCqrs.Common\NetCoreCqrs.Common.csproj" />
+    <ProjectReference Include="..\NetCoreCqrs.Domain\NetCoreCqrs.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_Infrastructure\" />
+    <Folder Include="DomainEventHandlers\" />
+  </ItemGroup>
+
+</Project>

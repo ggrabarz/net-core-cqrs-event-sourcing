@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreCqrs.Application\NetCoreCqrs.Application.csproj" />
+    <ProjectReference Include="..\NetCoreCqrs.Common\NetCoreCqrs.Common.csproj" />
+    <ProjectReference Include="..\NetCoreCqrs.Persistence\NetCoreCqrs.Persistence.csproj" />
+    <ProjectReference Include="..\NetCoreCqrs.ReadModel\NetCoreCqrs.ReadModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_Infrastructure\" />
+  </ItemGroup>
+
+</Project>

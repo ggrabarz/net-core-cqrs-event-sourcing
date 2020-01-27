@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NetCoreCqrs.Application\NetCoreCqrs.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="App_Infrastructure\CqrsBuildingBlocks\" />
+  </ItemGroup>
+
+</Project>
