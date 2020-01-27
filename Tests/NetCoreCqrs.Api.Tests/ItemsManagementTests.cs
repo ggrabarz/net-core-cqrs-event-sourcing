@@ -10,6 +10,7 @@ using Xunit;
 namespace NetCoreCqrs.Api.Tests
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0052:Remove unread private members")]
+    [Collection("ExecuteSynchronousCollection")]
     public class ItemsManagementTests : IClassFixture<CustomWebApplicationFactory<Startup>>
     {
         private readonly HttpClient _client;
