@@ -25,7 +25,7 @@ namespace NetCoreCqrs.Application.App_Infrastructure.DomainEventDispatch
             if (handlers == null) return;
             foreach (dynamic handler in handlers)
             {
-                await handler.HandleAsync((dynamic)domainEvent);
+                await handler.HandleAsync((dynamic)domainEvent); //TODO execute as fire-and-forget
             }
         }
 

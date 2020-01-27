@@ -53,7 +53,7 @@ namespace NetCoreCqrs.Api
             services.AddTransient<IRepository<InventoryItem>, Repository<InventoryItem>>();
             services.AddSingleton<IRepositoryCache<InventoryItem>, RepositoryCache<InventoryItem>>();
             services.AddSingleton<IRepositorySnapshotCache<InventoryItem>, RepositorySnapshotCache<InventoryItem>>();
-            services.AddTransient<IEventStore, EventStore>();
+            services.AddTransient<IEventStore, FakeEventStore>();
             services.AddSingleton<FakeReadDatabase>();
             services.AddSingleton<FakeWriteDatabase>();
         }

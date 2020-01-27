@@ -6,11 +6,11 @@ using System.Linq;
 
 namespace NetCoreCqrs.Persistence.EventStore
 {
-    public sealed class EventStore : IEventStore
+    public sealed class FakeEventStore : IEventStore
     {
         private readonly IDomainEventDispatcher _publisher;
 
-        public EventStore(IDomainEventDispatcher publisher)
+        public FakeEventStore(IDomainEventDispatcher publisher)
         {
             _publisher = publisher;
         }
@@ -44,7 +44,7 @@ namespace NetCoreCqrs.Persistence.EventStore
                     eventDescriptors.Add(new EventDescriptor(aggregateId, @event, i));
 
                     // publish current event to the bus for further processing by subscribers
-                    _publisher.DispatchAsync(@event).Wait(); //TODO execute in fire-and-forget manner
+                    _publisher.DispatchAsync(@event).Wait();
                 }
             }
         }
