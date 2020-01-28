@@ -20,6 +20,16 @@ This repository implement CQRS with separate read and write models and uses even
 4. Start debugging
 5. Use postman collection for testing 
 
+## Pre-production todo list
+
+- RepositoryCache should be implemented with cache cleaning mechanism
+- RepositoryCache should be implemented using separate component eg. Redis
+- RepositorySnapshotCache should be implemented having higher snapshot trigger eg. every 30-100 events
+- RepositorySnapshotCache trigger can not be hardcoded
+- RepositorySnapshotCache should be implemented using separate component eg. Redis
+- Apply C# await/async pattern whenever possible
+- Apply asynchronous (fire-and-forget) processing for event dispatch (for demo purposes it was implemented as synchronous)
+
 ## Options for CQRS
 
 _ | Not separated read/write models | Logically separate read/write models | Physically separate read/write models
