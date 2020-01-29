@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bef49c56-23eb-4164-8593-0fe2cd78cdfe",
+		"_postman_id": "a9ad93a1-6152-4f9a-9122-5a8572aa2809",
 		"name": "Cqrs&EventSourcing",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -31,7 +31,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/values/a7585bd4-4e38-4dde-abae-bd8a8310f100",
+					"raw": "https://localhost:5001/api/values/{{inventoryId}}",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -40,7 +40,7 @@
 					"path": [
 						"api",
 						"values",
-						"a7585bd4-4e38-4dde-abae-bd8a8310f100"
+						"{{inventoryId}}"
 					]
 				}
 			},
@@ -52,7 +52,7 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:5001/api/values?name=test0",
+					"raw": "https://localhost:5001/api/values?name=sampleItem",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -65,7 +65,7 @@
 					"query": [
 						{
 							"key": "name",
-							"value": "test0"
+							"value": "sampleItem"
 						},
 						{
 							"key": "version",
@@ -90,7 +90,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330/ChangeName?name=test2&version=0",
+					"raw": "https://localhost:5001/api/values/{{inventoryId}}/ChangeName?name=newName&version=0",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -99,13 +99,13 @@
 					"path": [
 						"api",
 						"values",
-						"bc41e20f-d495-438f-90fc-cdf5b194c330",
+						"{{inventoryId}}",
 						"ChangeName"
 					],
 					"query": [
 						{
 							"key": "name",
-							"value": "test2"
+							"value": "newName"
 						},
 						{
 							"key": "version",
@@ -129,7 +129,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330/IncreaseAmmount?number=0&version=0",
+					"raw": "https://localhost:5001/api/values/{{inventoryId}}/IncreaseAmmount?number=5&version=1",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -138,17 +138,17 @@
 					"path": [
 						"api",
 						"values",
-						"bc41e20f-d495-438f-90fc-cdf5b194c330",
+						"{{inventoryId}}",
 						"IncreaseAmmount"
 					],
 					"query": [
 						{
 							"key": "number",
-							"value": "0"
+							"value": "5"
 						},
 						{
 							"key": "version",
-							"value": "0"
+							"value": "1"
 						}
 					]
 				}
@@ -168,7 +168,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/api/values/6dad8c70-c3e2-448c-a17d-8f846f966036/DecreaseAmmount?number=3&version=4",
+					"raw": "https://localhost:5001/api/values/{{inventoryId}}/DecreaseAmmount?number=2&version=0",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -177,17 +177,17 @@
 					"path": [
 						"api",
 						"values",
-						"6dad8c70-c3e2-448c-a17d-8f846f966036",
+						"{{inventoryId}}",
 						"DecreaseAmmount"
 					],
 					"query": [
 						{
 							"key": "number",
-							"value": "3"
+							"value": "2"
 						},
 						{
 							"key": "version",
-							"value": "4"
+							"value": "0"
 						}
 					]
 				}
@@ -207,7 +207,7 @@
 					}
 				],
 				"url": {
-					"raw": "https://localhost:5001/api/values/bc41e20f-d495-438f-90fc-cdf5b194c330?version=0",
+					"raw": "https://localhost:5001/api/values/{{inventoryId}}?version=0",
 					"protocol": "https",
 					"host": [
 						"localhost"
@@ -216,7 +216,7 @@
 					"path": [
 						"api",
 						"values",
-						"bc41e20f-d495-438f-90fc-cdf5b194c330"
+						"{{inventoryId}}"
 					],
 					"query": [
 						{
@@ -227,6 +227,36 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "eacb12a8-452e-4cca-a318-f9bc3758f27c",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "da0ca085-2fca-4a42-a23e-56017f87a702",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "deedfb73-7773-4af4-b9d5-272b55f28cc6",
+			"key": "inventoryId",
+			"value": "",
+			"type": "string"
 		}
 	],
 	"protocolProfileBehavior": {}
